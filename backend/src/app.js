@@ -511,7 +511,7 @@ function startRoomMonitor() {
         }
     }, 5000); // Check every 5 seconds (adjust as needed)
 }
-
+const spinnerRooms = {}; // spinnerRooms = { roomId: { players, selectedNumbers, results, ... } }
 // =========================================================================
 const rooms = {}; // rooms = { roomId: { players, selectedIndexes, playerCartelas, ... } }
 const socketIdToClientId = new Map();
@@ -522,7 +522,49 @@ io.on("connection", (socket) => {
 // Add this block inside your main io.on("connection", (socket) => { ... });
 
 // --- SPINNER GAME HANDLER ---
+socket.on("joinSpinnerRoom", ({ roomId, username, telegramId, clientId }) => {
+  const rId = String(roomId);
+  socket.join(rId);
 
+  if (!spinnerRooms[rId]) {
+    spinnerRooms[rId] = {
+      players: {},
+      selectedNumbers: {},
+      results: {},
+      activeGame: false,
+    };
+  }
+
+  spinnerRooms[rId].players[clientId] = username;
+  spinnerRooms[rId].selectedNumbers[clientId] = [];
+
+  socket.emit("spinnerRoomJoined", { roomId: rId });
+});
+socket.on("selectSpinnerNumbers", async ({ roomId, selectedNumbers }) => {
+  const rId = String(roomId);
+  const clientId = socketIdToClientId.get(socket.id);
+  const username = spinnerRooms[rId]?.players[clientId];
+
+  if (!username || !spinnerRooms[rId]) return;
+
+  const user = await BingoBord.findOne({ username });
+  const stake = Number(rId);
+
+  if (!user || user.Wallet < stake) {
+    socket.emit("spinnerRejected", { message: "Insufficient balance or user not found" });
+    return;
+  }
+
+  user.Wallet -= stake;
+  await user.save();
+
+  spinnerRooms[rId].selectedNumbers[clientId] = selectedNumbers;
+
+  socket.emit("spinnerAccepted", { selectedNumbers, Wallet: user.Wallet });
+});
+socket.on("startSpinnerGame", async ({ roomId }) => {
+  await startSpinnerGame(roomId); // You already defined this function
+});
   // --- JOIN ROOM ---
   socket.on("joinRoom", ({ roomId, username, telegramId, clientId }) => {
     const rId = String(roomId);
@@ -750,6 +792,52 @@ socket.on("disconnect", () => {
   }
 });
 });
+async function startSpinnerGame(roomId) {
+  const room = spinnerRooms[roomId];
+  if (!room || room.activeGame) return;
+
+  room.activeGame = true;
+
+  const winningNumber = Math.floor(Math.random() * 100) + 1;
+
+  for (const clientId in room.selectedNumbers) {
+    const numbers = room.selectedNumbers[clientId];
+    const username = room.players[clientId];
+    const user = await BingoBord.findOne({ username });
+
+    const isWinner = numbers.includes(winningNumber);
+    const stake = Number(roomId);
+    const winnings = isWinner ? stake * 5 : 0;
+
+    if (isWinner) {
+      user.Wallet += winnings;
+      await user.save();
+    }
+
+    user.gameHistory.push({
+      gameId: `SPIN-${Date.now()}`,
+      stake,
+      roomId: `spinner_${stake}`,
+      outcome: isWinner ? "win" : "lose",
+      timestamp: new Date(),
+    });
+
+    await user.save();
+
+    room.results[clientId] = {
+      outcome: isWinner ? "win" : "lose",
+      winningNumber,
+      winnings,
+    };
+
+    const socketId = clientIdToSocketId.get(clientId);
+    if (socketId) {
+      io.to(socketId).emit("spinnerResult", room.results[clientId]);
+    }
+  }
+
+  room.activeGame = false;
+}
 
 function resetRoom(roomId) {
   const room = rooms[roomId];

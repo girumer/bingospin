@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import './spinnerselection.css';
+
+import socket from "../socket";
 const SpinnerSelection = () => {
   const [searchParams] = useSearchParams();
   const [selectedNumbers, setSelectedNumbers] = useState([]);
@@ -13,13 +15,23 @@ const SpinnerSelection = () => {
   const numbers = Array.from({ length: 100 }, (_, i) => i + 1);
 useEffect(() => {
   if (window.Telegram && window.Telegram.WebApp) {
-    window.Telegram.WebApp.ready();   // Signals to Telegram that your app is ready
-    window.Telegram.WebApp.expand();  // Optional: expands to full height
+    window.Telegram.WebApp.ready();
+    window.Telegram.WebApp.expand();
     console.log("Telegram WebApp initialized");
-  } else {
-    console.warn("Telegram WebApp not available");
   }
-}, []);
+
+  // Join Spinner Room
+  if (username && telegramId && stake) {
+    const clientId = `${telegramId}-spinner`; // Unique client ID for Spinner
+    socket.emit("joinSpinnerRoom", {
+      roomId: stake,
+      username,
+      telegramId,
+      clientId,
+    });
+  }
+}, [username, telegramId, stake]);
+
 if (!username || !telegramId || !stake) {
   return <div>❌ Missing required info. Please return to the bot.</div>;
 }
@@ -31,20 +43,25 @@ if (!username || !telegramId || !stake) {
     }
   };
 
-  const handleSubmit = () => {
-    if (selectedNumbers.length === 0) {
-      alert("Please select at least one number");
-      return;
-    }
-    console.log({
-      username,
-      telegramId,
-      stake,
-      selectedNumbers,
-    });
+ const handleSubmit = () => {
+  if (selectedNumbers.length === 0) {
+    alert("Please select at least one number");
+    return;
+  }
 
-    // TODO: Send the selected numbers to your server here
-  };
+  const clientId = `${telegramId}-spinner`;
+
+  socket.emit("selectSpinnerNumbers", {
+    roomId: stake,
+    username,
+    telegramId,
+    clientId,
+    selectedNumbers,
+  });
+
+  navigate(`/SpinnerAnimation?username=${username}&telegramId=${telegramId}&stake=${stake}`);
+};
+
 
   return (
     <div className="spinner-selection">

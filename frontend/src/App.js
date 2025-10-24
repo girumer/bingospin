@@ -24,6 +24,7 @@ import TopUsers from './components/TopUsers';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AdminPasswordReset from './components/AdminPasswordReset';
 import SpinnerSelection from './components/SpinnerSelection';
+import SpinnerAnimation from './components/SpinnerAnimation';
 import ProtectedRoute from './components/ProtectedRoute';
 import axios from "axios"
 function App() {
@@ -80,6 +81,7 @@ function App() {
           <Route path="/TopUsers"  element={<TopUsers/>}/>
          <Route path="/CartelaSelction" element={<CartelaSelction/>}/>
       <Route path="/SpinnerSelection" element={<SpinnerSelection />} />
+       <Route path="/SpinnerSelection" element={<SpinnerSelection />} />
            <Route path="/BingoBoard" element={<BingoBoard/>}/>
           </Route>
         </Routes>
