@@ -198,7 +198,7 @@ const [otherUsersCartelas, setOtherUsersCartelas] = useState([]); // Cartelas se
 
       console.log("Fetching wallet data for Telegram ID:", telegramIdParam);
 
- const response = await axios.get(
+ const response = await axios.post(
   `${process.env.REACT_APP_BACKEND_URL}/depositcheckB`,
   { params: { telegramId: telegramIdParam } }
 );
