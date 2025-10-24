@@ -861,7 +861,7 @@ case "spinner_room_50":
   // ✅ Redirect to Spinner page with parameters
   const spinnerUrl = `${process.env.FRONTEND_URL}/SpinnerSelection?username=${encodeURIComponent(user.username)}&telegramId=${user.telegramId}&stake=${stake1}`;
 
-  bot.sendMessage(chatId, `🎯 Ready to spin for ${stake} ETB! Click below to continue:`, {
+  bot.sendMessage(chatId, `🎯 Ready to spin for ${stake1} ETB! Click below to continue:`, {
     reply_markup: {
       inline_keyboard: [
         [
