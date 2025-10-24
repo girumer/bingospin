@@ -1031,7 +1031,7 @@ const winnerUsernames = new Set();
           // Existing logic to save loss history
           await saveGameHistory(username, roomId, Number(roomId), "loss", room.gameId);
           
-          console.log(`Rewarded loser ${username} with ${coinBonusForLoser} coins.`);
+          
         }
  }
  }
