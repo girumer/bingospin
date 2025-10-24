@@ -307,23 +307,7 @@ bot.onText(/\/(|balance|play|deposit|history|help|withdraw)/, async (msg, match)
       });
   break;
   
-      case "spin_game":
-  bot.answerCallbackQuery(callbackQuery.id); // ✅ Acknowledge the button click
-  bot.sendMessage(chatId, "Select your bet amount for Spin & Win:", {
-    reply_markup: {
-      inline_keyboard: [
-        [
-          { text: "Spin 5 ETB", callback_data: "spin_5" },
-          { text: "Spin 10 ETB", callback_data: "spin_10" },
-        ],
-        [
-          { text: "Spin 20 ETB", callback_data: "spin_20" },
-          { text: "Spin 50 ETB", callback_data: "spin_50" },
-        ]
-      ]
-    }
-  });
-  break;
+   
 
     
     case "help":
@@ -670,7 +654,23 @@ bot.on('callback_query', async (callbackQuery) => {
         }
       });
       break;
-
+   case "spin_game":
+   // ✅ Acknowledge the button click
+  bot.sendMessage(chatId, "Select your bet amount for Spin & Win:", {
+    reply_markup: {
+      inline_keyboard: [
+        [
+          { text: "Spin 5 ETB", callback_data: "spin_5" },
+          { text: "Spin 10 ETB", callback_data: "spin_10" },
+        ],
+        [
+          { text: "Spin 20 ETB", callback_data: "spin_20" },
+          { text: "Spin 50 ETB", callback_data: "spin_50" },
+        ]
+      ]
+    }
+  });
+  break;
     case "gameHistory":
       if (!user.gameHistory || user.gameHistory.length === 0) {
         bot.sendMessage(chatId, "🎮 You have no game history yet.");
