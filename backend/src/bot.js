@@ -654,8 +654,8 @@ bot.on('callback_query', async (callbackQuery) => {
         }
       });
       break;
-   case "spin_game":
-   // ✅ Acknowledge the button click
+ case "spin_game":
+  // ✅ Acknowledge the button click
   bot.sendMessage(chatId, "Select your bet amount for Spin & Win:", {
     reply_markup: {
       inline_keyboard: [
@@ -841,14 +841,16 @@ case "room_30":
     }
   });
   break;
- case "spinner_room_5":
-case "spinner_room_10":
-case "spinner_room_20":
-case "spinner_room_50":
+ case "spin_5":
+case "spin_10":
+case "spin_20":
+case "spin_50":
   bot.answerCallbackQuery(callbackQuery.id); // ✅ Acknowledge the button click
 
-  const spinStake = Number(data.split("_")[2]);
-  const user = await BingoBord.findOne({ telegramId: chatId });
+  const spinStake = Number(data.split("_")[1]);
+  
+  // REMOVE THIS DUPLICATE LINE: const user = await BingoBord.findOne({ telegramId: chatId });
+  // User is already fetched at the beginning of the callback handler
 
   if (!user) {
     bot.sendMessage(chatId, "❌ You are not registered. Use /start to begin.");
