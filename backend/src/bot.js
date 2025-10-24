@@ -161,8 +161,8 @@ bot.onText(/\/(balance|play|deposit|history|help|withdraw|coins)/, async (msg, m
         break;
         // Case for when the user selects 'Play Bingo' from the main menu
 // ... existing switch cases ...
-
-   case "spin_game":
+case "spin_game":
+  bot.answerCallbackQuery(callbackQuery.id); // ✅ Acknowledge the button click
   bot.sendMessage(chatId, "Select your bet amount for Spin & Win:", {
     reply_markup: {
       inline_keyboard: [
