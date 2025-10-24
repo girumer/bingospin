@@ -974,7 +974,7 @@ async function checkWinners(roomId, calledNumber) {
   if (!room) return;
   const winners = [];
    const stakeAmount = Number(roomId); 
-  const coinBonusForLoser = (stakeAmount * 0.01);
+  //const coinBonusForLoser = (stakeAmount * 0.01);
   for (const clientId in room.playerCartelas) {
     const cartelas = room.playerCartelas[clientId];
     if (!cartelas || cartelas.length === 0) continue;
@@ -1026,8 +1026,7 @@ const winnerUsernames = new Set();
         if (user) {
           // The user is a loser (played but didn't win)
           // IMPORTANT: We use += for floating point numbers
-          user.coins += coinBonusForLoser; 
-          await user.save();
+          
 
           // Existing logic to save loss history
           await saveGameHistory(username, roomId, Number(roomId), "loss", room.gameId);
