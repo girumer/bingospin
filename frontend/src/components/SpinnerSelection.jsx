@@ -11,7 +11,18 @@ const SpinnerSelection = () => {
 
   // Array from 1 to 100
   const numbers = Array.from({ length: 100 }, (_, i) => i + 1);
-
+useEffect(() => {
+  if (window.Telegram && window.Telegram.WebApp) {
+    window.Telegram.WebApp.ready();   // Signals to Telegram that your app is ready
+    window.Telegram.WebApp.expand();  // Optional: expands to full height
+    console.log("Telegram WebApp initialized");
+  } else {
+    console.warn("Telegram WebApp not available");
+  }
+}, []);
+if (!username || !telegramId || !stake) {
+  return <div>❌ Missing required info. Please return to the bot.</div>;
+}
   const handleSelect = (num) => {
     if (selectedNumbers.includes(num)) {
       setSelectedNumbers(selectedNumbers.filter((n) => n !== num));
