@@ -841,11 +841,13 @@ case "room_30":
     }
   });
   break;
-  case "spinner_room_5":
+ case "spinner_room_5":
 case "spinner_room_10":
 case "spinner_room_20":
 case "spinner_room_50":
-  const stake1 = Number(data.split("_")[2]); // Extract 5, 10, etc.
+  bot.answerCallbackQuery(callbackQuery.id); // ✅ Acknowledge the button click
+
+  const spinStake = Number(data.split("_")[2]);
   const user = await BingoBord.findOne({ telegramId: chatId });
 
   if (!user) {
@@ -853,20 +855,17 @@ case "spinner_room_50":
     return;
   }
 
-  if (user.Wallet < stake1) {
+  if (user.Wallet < spinStake) {
     bot.sendMessage(chatId, `❌ You don't have enough balance. Your wallet: ${user.Wallet} ETB`);
     return;
   }
 
-  // ✅ Redirect to Spinner page with parameters
-  const spinnerUrl = `${process.env.FRONTEND_URL}/SpinnerSelection?username=${encodeURIComponent(user.username)}&telegramId=${user.telegramId}&stake=${stake1}`;
+  const spinnerUrl = `${process.env.FRONTEND_URL}/SpinnerSelection?username=${encodeURIComponent(user.username)}&telegramId=${user.telegramId}&stake=${spinStake}`;
 
-  bot.sendMessage(chatId, `🎯 Ready to spin for ${stake1} ETB! Click below to continue:`, {
+  bot.sendMessage(chatId, `🎯 Ready to spin for ${spinStake} ETB! Click below to continue:`, {
     reply_markup: {
       inline_keyboard: [
-        [
-          { text: "🎰 Launch Spinner", web_app: { url: spinnerUrl } }
-        ]
+        [{ text: "🎰 Launch Spinner", web_app: { url: spinnerUrl } }]
       ]
     }
   });
