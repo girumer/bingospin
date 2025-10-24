@@ -161,23 +161,6 @@ bot.onText(/\/(balance|play|deposit|history|help|withdraw|coins)/, async (msg, m
         break;
         // Case for when the user selects 'Play Bingo' from the main menu
 // ... existing switch cases ...
-case "spin_game":
-  bot.answerCallbackQuery(callbackQuery.id); // ✅ Acknowledge the button click
-  bot.sendMessage(chatId, "Select your bet amount for Spin & Win:", {
-    reply_markup: {
-      inline_keyboard: [
-        [
-          { text: "Spin 5 ETB", callback_data: "spin_5" },
-          { text: "Spin 10 ETB", callback_data: "spin_10" },
-        ],
-        [
-          { text: "Spin 20 ETB", callback_data: "spin_20" },
-          { text: "Spin 50 ETB", callback_data: "spin_50" },
-        ]
-      ]
-    }
-  });
-  break;
 
        
 
@@ -324,7 +307,24 @@ bot.onText(/\/(|balance|play|deposit|history|help|withdraw)/, async (msg, match)
       });
   break;
   
-      
+      case "spin_game":
+  bot.answerCallbackQuery(callbackQuery.id); // ✅ Acknowledge the button click
+  bot.sendMessage(chatId, "Select your bet amount for Spin & Win:", {
+    reply_markup: {
+      inline_keyboard: [
+        [
+          { text: "Spin 5 ETB", callback_data: "spin_5" },
+          { text: "Spin 10 ETB", callback_data: "spin_10" },
+        ],
+        [
+          { text: "Spin 20 ETB", callback_data: "spin_20" },
+          { text: "Spin 50 ETB", callback_data: "spin_50" },
+        ]
+      ]
+    }
+  });
+  break;
+
     
     case "help":
      bot.sendMessage(chatId, "Use the menu to check balance, play games, or see your history. If you need further assistance, please contact our support team.", {
