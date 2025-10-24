@@ -33,9 +33,9 @@ const mainMenu = {
   reply_markup: {
     inline_keyboard: [
       [
-       { text: "🎰 Spin & Win", callback_data: "spin_game" },
+       
         { text: "🎮 Play Bingo", callback_data: "play" },
-        
+        { text: "🎰 Spin & Win", callback_data: "spin_game" },
       ],
       [ 
          { text: "💰 Balance", callback_data: "balance" },
@@ -162,24 +162,24 @@ bot.onText(/\/(balance|play|deposit|history|help|withdraw|coins)/, async (msg, m
         // Case for when the user selects 'Play Bingo' from the main menu
 // ... existing switch cases ...
 
-    case "spin_game": // From the main menu button
-        // The Spinner game usually uses a fixed stake, but you can offer options too.
-        bot.sendMessage(chatId, "Select your bet amount for Spin & Win:", {
-            reply_markup: {
-                inline_keyboard: [
-                    [
-                        // Ensure the web_app URL points to the correct component path: /SpinnerSelection
-                        { text: "Spin 5 ETB", web_app: { url: `${process.env.FRONTEND_URL}/SpinnerSelection?username=${encodeURIComponent(user.username)}&telegramId=${user.telegramId}&stake=5` } },
-                        { text: "Spin 10 ETB", web_app: { url: `${process.env.FRONTEND_URL}/SpinnerSelection?username=${encodeURIComponent(user.username)}&telegramId=${user.telegramId}&stake=10` } },
-                    ],
-                    [
-                        { text: "Spin 20 ETB", web_app: { url: `${process.env.FRONTEND_URL}/SpinnerSelection?username=${encodeURIComponent(user.username)}&telegramId=${user.telegramId}&stake=30` } },
-                        { text: "Spin 50 ETB", web_app: { url: `${process.env.FRONTEND_URL}/SpinnerSelection?username=${encodeURIComponent(user.username)}&telegramId=${user.telegramId}&stake=50` } },
-                    ]
-                ]
-            }
-        });
-        break;
+   case "spin_game":
+  bot.sendMessage(chatId, "Select your bet amount for Spin & Win:", {
+    reply_markup: {
+      inline_keyboard: [
+        [
+          { text: "Spin 5 ETB", callback_data: "spin_5" },
+          { text: "Spin 10 ETB", callback_data: "spin_10" },
+        ],
+        [
+          { text: "Spin 20 ETB", callback_data: "spin_20" },
+          { text: "Spin 50 ETB", callback_data: "spin_50" },
+        ]
+      ]
+    }
+  });
+  break;
+
+       
 
 // ... rest of the switch cases ...
       case "help":
@@ -841,6 +841,37 @@ case "room_30":
     }
   });
   break;
+  case "spinner_room_5":
+case "spinner_room_10":
+case "spinner_room_20":
+case "spinner_room_50":
+  const stake1 = Number(data.split("_")[2]); // Extract 5, 10, etc.
+  const user = await BingoBord.findOne({ telegramId: chatId });
+
+  if (!user) {
+    bot.sendMessage(chatId, "❌ You are not registered. Use /start to begin.");
+    return;
+  }
+
+  if (user.Wallet < stake1) {
+    bot.sendMessage(chatId, `❌ You don't have enough balance. Your wallet: ${user.Wallet} ETB`);
+    return;
+  }
+
+  // ✅ Redirect to Spinner page with parameters
+  const spinnerUrl = `${process.env.FRONTEND_URL}/SpinnerSelection?username=${encodeURIComponent(user.username)}&telegramId=${user.telegramId}&stake=${stake1}`;
+
+  bot.sendMessage(chatId, `🎯 Ready to spin for ${stake} ETB! Click below to continue:`, {
+    reply_markup: {
+      inline_keyboard: [
+        [
+          { text: "🎰 Launch Spinner", web_app: { url: spinnerUrl } }
+        ]
+      ]
+    }
+  });
+  break;
+
     // Alternative: If you want to automatically open the web app without a button
   // Note: This requires the user to have interacted with the bot first
   // bot.sendMessage(chatId, `✅ You joined Room ${stake}! ${stake} coins deducted.`, {
