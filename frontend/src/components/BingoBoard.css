@@ -279,11 +279,14 @@ input:checked + .toggle-slider:before {
 }
 /* --- Cartelas Container --- */
 .cartelas-container-horizontal {
+
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* 2 columns for 4 cartelas */
   grid-template-rows: repeat(2, auto);  /* 2 rows for 4 cartelas */
   gap: 8px;
   width: 100%;
+  margin-left: 5px;
+  margin-right: 5px;
   padding: 5px;
   box-sizing: border-box;
   justify-items: center;
