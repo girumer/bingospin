@@ -485,7 +485,7 @@ input:checked + .toggle-slider:before {
 
 
   /* Bottom container grid */
-.cartelas-container-horizontal {
+/* .cartelas-container-horizontal {
   display: flex;
   gap: 8px;
   padding: 5px;
@@ -493,6 +493,17 @@ input:checked + .toggle-slider:before {
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
+}
+ */
+ .cartelas-container-horizontal {
+  display: flex;
+  gap: 8px;
+  padding: 5px 15px; /* ← adds left/right padding */
+  overflow-x: auto;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box; /* ensures padding doesn't overflow */
 }
 
 .cartelas-container-horizontal > .cartela-display {
