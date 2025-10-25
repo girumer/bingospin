@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams,useOutletContext } from "react-router-dom";
 import './spinnerselection.css';
 
 import socket from "../socket";
@@ -10,7 +10,7 @@ const SpinnerSelection = () => {
   const username = searchParams.get("username");
   const telegramId = searchParams.get("telegramId");
   const stake = searchParams.get("stake");
-
+const navigate=useNavigate();
   // Array from 1 to 100
   const numbers = Array.from({ length: 100 }, (_, i) => i + 1);
 useEffect(() => {
