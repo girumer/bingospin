@@ -229,7 +229,7 @@ input:checked + .toggle-slider:before { transform: translateX(26px); }
 .cartela-header-cell { flex: 1; height: 16px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; border-radius: 2px; }
 
 /* Winner-cartela styles (modal) reuse cartela styles */
-.cartela-index { text-align: center; font-size: 12px; font-weight: bold; color: #161414; margin-top: 2px; }
+.cartela-index { text-align: center; font-size: 12px; font-weight: bold; color: #fcf8f8; margin-top: 2px; }
 .bingo-button { width: 50%; height: 40px; margin-left: 25%; margin-right: 25%; padding: 3px 0; font-size: 12px; background: #f67d05; color: white; border: none; border-radius: 7px; cursor: pointer; margin-top: 2px; }
 
 /* --- MOBILE FIRST TUNING for Tecno Spark 8P (6.6" HD+ 1600x720) --- */
@@ -251,8 +251,8 @@ input:checked + .toggle-slider:before { transform: translateX(26px); }
 }
 .single-cartela {
   justify-content: center;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: 2px;
+  padding-right: 2px;
   box-sizing: border-box;
 }
 
@@ -262,7 +262,7 @@ input:checked + .toggle-slider:before { transform: translateX(26px); }
   margin: 0;
   transform: scale(1.08); /* subtle enlargement */
   transition: transform 0.3s ease;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); /* deeper shadow for emphasis */
+  box-shadow: 0 6px 16px rgb(251, 250, 250); /* deeper shadow for emphasis */
 }
 
   .bottom-right { display: none; } /* collapsed on portrait phones */
@@ -281,7 +281,7 @@ input:checked + .toggle-slider:before { transform: translateX(26px); }
 
  
   .cartela-display {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgb(255, 248, 248);
 }
 .single-cartela {
   justify-content: center;
