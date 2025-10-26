@@ -482,7 +482,11 @@ input:checked + .toggle-slider:before {
 @media (max-width: 768px) {
 
   
-
+.bottom-panels {
+  padding-left: 20px;
+  padding-right: 20px;
+  box-sizing: border-box;
+}
 
   /* Bottom container grid */
 /* .cartelas-container-horizontal {
