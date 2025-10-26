@@ -480,13 +480,62 @@ input:checked + .toggle-slider:before {
 
 /* --- MOBILE --- */
 @media (max-width: 768px) {
+/* ensure global safe padding for small screens */
+.bingo-board-wrapper {
+  padding-left: 12px;
+  padding-right: 12px;
+  box-sizing: border-box;
+}
+
+/* bottom area breathing room (left and right) */
+.bottom-panels {
+  padding-left: 16px;
+  padding-right: 16px;
+  gap: 8px;
+  flex-direction: column; /* stack panels on narrow portrait phones */
+}
+
+/* cartelas container: extra edge padding so cards don't touch screen edge */
+.cartelas-container-horizontal {
+  padding-left: 16px;
+  padding-right: 16px;
+  gap: 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-padding-left: 16px;
+  scroll-padding-right: 16px;
+}
+
+/* card sizes tuned for HD+ 720px width */
+.cartela-display {
+  min-width: 140px;
+  width: 140px;
+  padding: 6px;
+}
+
+/* tighten grid cells slightly */
+.cartela-cell {
+  height: 26px;
+  font-size: 12px;
+}
+
+/* last-called and last-five scale */
+.last-called-number { width: 60px; height: 60px; font-size: 13px; }
+.last-five-number { width: 26px; height: 26px; font-size: 10px; }
+
+/* make Bingo button easier to tap */
+.bingo-button { height: 40px; font-size: 13px; }
+
+/* ensure top stat cards don't overflow */
+.top-stats { padding-left: 8px; padding-right: 8px; gap: 6px; }
+.stat-button { min-width: 80px; padding: 8px; font-size: 15px; }
 
   
-.bottom-panels {
+/* .bottom-panels {
   padding-left: 20px;
   padding-right: 20px;
   box-sizing: border-box;
-}
+} */
 
   /* Bottom container grid */
 /* .cartelas-container-horizontal {
@@ -499,16 +548,16 @@ input:checked + .toggle-slider:before {
   width: 100%;
 }
  */
- .cartelas-container-horizontal {
+ /* .cartelas-container-horizontal {
   display: flex;
   gap: 8px;
-  padding: 5px 15px; /* ← adds left/right padding */
+  padding: 5px 15px; 
   overflow-x: auto;
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
-  box-sizing: border-box; /* ensures padding doesn't overflow */
-}
+  box-sizing: border-box; 
+} */
 
 .cartelas-container-horizontal > .cartela-display {
   flex: 1 0 auto; /* expand but don’t shrink below min-width */
