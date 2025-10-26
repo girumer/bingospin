@@ -247,18 +247,35 @@ input:checked + .toggle-slider:before { transform: translateX(26px); }
   .bottom-right { display: none; } /* collapsed on portrait phones */
 
   /* cartelas container: horizontal scrolling with edge padding */
-  .cartelas-container-horizontal {
+   .cartelas-container-horizontal {
     display: flex;
-    gap: 10px;
+    justify-content: center;
+    align-items: center;
     padding-left: 16px;
     padding-right: 16px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scroll-padding-left: 16px;
-    scroll-padding-right: 16px;
-    justify-content: flex-start;
-    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+    box-sizing: border-box;
   }
+
+  .cartela-display {
+    flex: 1;
+    max-width: 100%;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+.single-cartela {
+  justify-content: center;
+}
+
+.single-cartela .cartela-display {
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
 
   /* ensure each card has breathing room from screen edges */
   .cartelas-container-horizontal > .cartela-display {
