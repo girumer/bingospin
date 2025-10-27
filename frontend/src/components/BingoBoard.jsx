@@ -394,7 +394,7 @@ useEffect(() => {
           />
           </div>
         </div>
-        <div className="bottom-right">{/* Optional: last five numbers, timer, stats */}</div>
+        
       </div>
 
       {/* WINNER POPUP */}
