@@ -170,14 +170,14 @@ input:checked + .toggle-slider:before { transform: translateX(26px); }
 
 /* --- BOTTOM SECTION - 60% --- */
 .bottom-panels {
-  flex: 0 0 100%;
+  flex: 0 0 60%;
   display: flex;
   background-color: #12024cdb;
   gap: 5px;
   box-sizing: border-box;
 }
 .bottom-left { flex: 1; background: #12024cdb; border-radius: 5px; padding: 5px; box-sizing: border-box; }
- /* hidden on narrow screens */
+.bottom-right { flex: 0 0 120px; display: none; } /* hidden on narrow screens */
 
 /* --- Cartelas Container --- */
 .cartelas-container-horizontal {
@@ -185,8 +185,8 @@ input:checked + .toggle-slider:before { transform: translateX(26px); }
   height: 100%;
   display: flex;
   gap: 8px;
- /* justify-content:center;
- // align-items: center;*/
+  justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
   padding: 5px;
   box-sizing: border-box;
@@ -204,41 +204,6 @@ input:checked + .toggle-slider:before { transform: translateX(26px); }
   background: rgb(239, 239, 238);
   padding: 4px;
   box-sizing: border-box;
-}
-/* When only one cartela is selected */
-.single-cartela .cartela-display {
-  width: calc(200% - 20px); /* Take up space of two cartelas (minus small gap) */
-  height: 100%;
-  max-width: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  transform: scale(1.02);
-  transition: all 0.3s ease-in-out;
-}
-
-
-.single-cartela .cartela-header-cell {
-  font-size: 1.1rem;
-  height: 30px;
-}
-
-/* Make the Bingo button centered and proportional */
-.single-cartela .bingo-button {
-  width: 50%;
-  height: 45px;
-  font-size: 16px;
-  margin-top: 12px;
-}
-
-
-
-.single-cartela .bingo-button {
-  width: 60%;
-  height: 50px;
-  font-size: 16px;
-  margin-top: 10px;
 }
 
 /* Header cells */
