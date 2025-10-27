@@ -205,6 +205,36 @@ input:checked + .toggle-slider:before { transform: translateX(26px); }
   padding: 4px;
   box-sizing: border-box;
 }
+/* When only one cartela is selected */
+.single-cartela .cartela-display {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transform: scale(1.05);
+}
+
+.single-cartela .cartela-cell {
+  width: 100%;
+  height: 100%;
+  font-size: 1.5rem;
+  padding: 10px;
+}
+
+.single-cartela .cartela-header-cell {
+  font-size: 1.2rem;
+  height: 35px;
+}
+
+.single-cartela .bingo-button {
+  width: 60%;
+  height: 50px;
+  font-size: 16px;
+  margin-top: 10px;
+}
 
 /* Header cells */
 .cartela-header { display: flex; gap: 1px; margin-bottom: 2px; }
