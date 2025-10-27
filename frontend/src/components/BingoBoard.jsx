@@ -380,7 +380,7 @@ useEffect(() => {
       
       {/* BOTTOM PANELS */}
       <div className="bottom-panels">
-       
+        <div className="bottom-left">
           <div className={`cartelas-container-horizontal ${myCartelas.length === 1 ? "single-cartela" : ""}`}>
 
           <MyCartelasSection
@@ -393,7 +393,7 @@ useEffect(() => {
              allCalledNumbers={allCalledNumbers} 
           />
           </div>
-      
+        </div>
         
       </div>
 
