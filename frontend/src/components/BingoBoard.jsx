@@ -362,7 +362,7 @@ useEffect(() => {
 
         {letters.map((letter, rowIndex) => (
           <div key={letter} className="number-row">
-            <div className="letter-button">{letter}</div>
+          
             {numberColumns[rowIndex].map((num) => (
               <button
                 key={num}

@@ -252,6 +252,7 @@ input:checked + .toggle-slider:before { transform: translateX(26px); }
 .single-cartela {
   display: flex;
   justify-content: center;
+  align-items: flex-start; 
   padding-left: 16px;
   padding-right: 16px;
   box-sizing: border-box;
