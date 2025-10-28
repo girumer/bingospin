@@ -203,7 +203,7 @@ input:checked + .toggle-slider:before { transform: translateX(26px); }
 .bottom-left.single-cartela {
   padding-top: 0 !important; /* remove padding inside the left panel */
   margin-top: 0 !important;  /* remove margin inside the left panel */
-  align-items: flex-start;   /* align child content to the top */
+  align-items: center;   /* align child content to the top */
   display: flex;
   flex-direction: column;
 }
