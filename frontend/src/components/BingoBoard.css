@@ -179,7 +179,17 @@ input:checked + .toggle-slider:before { transform: translateX(26px); }
 }
 .bottom-left { flex: 1; background: #12024cdb; border-radius: 5px; padding: 5px; box-sizing: border-box; }
 .bottom-right { flex: 0 0 120px; display: none; } /* hidden on narrow screens */
+.bottom-panels {
+  margin-top: 0 !important; /* remove gap above bottom panels */
+}
 
+.bottom-left.single-cartela {
+  padding-top: 0 !important; /* remove padding inside the left panel */
+  margin-top: 0 !important;  /* remove margin inside the left panel */
+  align-items: flex-start;   /* align child content to the top */
+  display: flex;
+  flex-direction: column;
+}
 /* --- Cartelas Container --- */
 .cartelas-container-horizontal {
   width: 100%;
