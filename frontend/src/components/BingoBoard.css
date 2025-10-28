@@ -102,8 +102,8 @@ input:checked + .toggle-slider:before { transform: translateX(26px); }
   min-width: 100px;
 }
 .stat-button1{
-   background: #9c2f03de;
-   color: rgb(10, 4, 4);
+   background: #f74904de;
+   color: rgb(255, 254, 254);
 }
 
 /* --- MIDDLE SECTION - 30% --- */
