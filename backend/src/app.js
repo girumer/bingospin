@@ -518,7 +518,7 @@ function startInjectionMonitor(rId, initiatorClientId) {
         // Start countdown immediately if >= 2 players have tickets and timer hasn't started
         if (!room.timer && playersWithCartela >= 2) {
             console.log(`[INJECT TRIGGER] ${playersWithCartela} players now have cartelas. Starting 45s countdown.`);
-            startCountdown(rId, 45);
+            startCountdown(rId, 15);
             // DO NOT return, continue to inject the next bot ticket during countdown
         }
 
