@@ -259,8 +259,9 @@ input:checked + .toggle-slider:before { transform: translateX(26px); }
 
 .single-cartela .cartela-display {
   flex: 1;
-  width: 100%;
-  max-width: 100%;
+  
+  width: 100% !important;
+  height: 100% !important;
   margin-top: 5px;
   transform: scale(1.05);
   transition: transform 0.3s ease;
