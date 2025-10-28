@@ -302,9 +302,7 @@ input:checked + .toggle-slider:before { transform: translateX(26px); }
   transform: scale(1.05);
   transition: transform 0.3s ease;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-  width: 140px !important;       /* ✅ fixed width */
-  max-width: 140px !important;   /* ✅ prevent stretching */
-  margin: 0 auto
+  
 }
 
 
