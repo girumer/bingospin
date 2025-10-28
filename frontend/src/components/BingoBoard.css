@@ -172,6 +172,7 @@ input:checked + .toggle-slider:before { transform: translateX(26px); }
 .bottom-panels {
   flex: 0 0 60%;
   display: flex;
+  margin-top: 5px;
   background-color: #12024cdb;
   gap: 5px;
   box-sizing: border-box;
@@ -251,6 +252,7 @@ input:checked + .toggle-slider:before { transform: translateX(26px); }
 }
 .single-cartela {
   display: flex;
+  margin-top: 0;
   justify-content: center;
   align-items: flex-start; 
   padding-left: 16px;
