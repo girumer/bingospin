@@ -287,7 +287,13 @@ input:checked + .toggle-slider:before { transform: translateX(26px); }
     box-sizing: border-box;
   }
 
- 
+ .bottom-left {
+  padding-top: 0; /* remove extra space */
+}
+
+.single-cartela {
+  margin-top: 0; /* remove top margin */
+}
   .cartela-display {
   box-shadow: 0 4px 12px rgb(255, 248, 248);
 }
