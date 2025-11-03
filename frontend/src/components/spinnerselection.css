@@ -89,6 +89,8 @@ p {
     background-color: #333; /* Fallback for wheel background */
     overflow: hidden; /* Crucial for clipping segments cleanly */
     border: 2px solid rgba(0,0,0,0.1); /* Subtle inner border for wheel */
+    /* Add transition for smooth rotation */
+    transition: transform 5s cubic-bezier(0.1, 0.7, 0.1, 1); /* Slower start, faster middle, slow end */
 }
 
 /* --- Individual Spinner Segments (Pie Slices) --- */
@@ -96,21 +98,24 @@ p {
     position: absolute;
     top: 0;
     left: 50%;
-    width: 50%; /* Half the circle's width */
-    height: 100%; /* Full height of the circle */
-    transform-origin: 0% 100%; /* Rotate around the bottom-left corner (center of circle) */
+    width: 50%; /* Half the circle's width (radius) */
+    height: 100%; /* Full height of the circle (diameter) */
+    transform-origin: 0% 100%; /* Rotate around the bottom-left corner of THIS element, which is the center of the spinner */
     box-sizing: border-box;
     border-right: 1px solid rgba(0,0,0,0.1); /* Visible demarcation line */
     /* background-color set inline in React */
-    display: flex;
-    justify-content: center; /* Center content within the skewed space */
-    align-items: center;
+    /* IMPORTANT: For the skewed segment to look like a pie slice,
+       the `overflow: hidden` on `.spinner-wheel` is critical.
+       The skew and rotate create the shape, and the overflow cuts off the excess.
+    */
 }
 
 .segment-text-content {
     position: absolute;
-    left: 50%; /* Position relative to the parent segment */
+    left: 0; /* Relative to its parent segment */
     top: 50%;
+    width: 100%; /* Take full width of parent segment (the skewed area) */
+    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -118,45 +123,68 @@ p {
     color: #fff; /* White text for numbers */
     font-weight: bold;
     text-shadow: 0 2px 3px rgba(0,0,0,0.4); /* Text shadow for readability */
-    /* transform properties are set inline in React */
+    /* Adjust these values to position text visually in the center of the slice */
+    /* The transform is set inline in React to counteract the segment's skew and rotate the text */
 }
 
 .segment-value {
-    font-size: 3.5em; /* Large number */
+    font-size: 2.8em; /* Slightly smaller for better fit, adjust as needed */
     line-height: 1; /* Tighten line height */
 }
 
 .segment-unit {
-    font-size: 1em; /* Smaller unit text */
+    font-size: 0.9em; /* Smaller unit text */
     margin-top: 5px; /* Space between value and unit */
 }
+
+.segment-emoji-img {
+    width: 60px; /* Adjust emoji size to fit */
+    height: 60px;
+    object-fit: contain;
+}
+
 
 /* --- Center Spin Button --- */
 .spinner-center-btn {
     position: absolute;
     z-index: 15;
-    width: 70px; /* Small, central button */
-    height: 70px;
+    width: 90px; /* Larger central button */
+    height: 90px;
     border-radius: 50%;
-    background-color: #f7b538; /* Yellow-orange color */
+    background-color: #e04e20; /* More distinct red for spin button */
     border: 5px solid #fff; /* White border */
     box-shadow: 
-        0 0 10px rgba(0,0,0,0.3),
-        inset 0 0 15px rgba(255,255,255,0.5); /* Inner highlight */
+        0 0 10px rgba(0,0,0,0.4),
+        inset 0 0 20px rgba(255,255,255,0.6); /* Inner highlight */
     cursor: pointer;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+    display: flex; /* For centering text */
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em; /* Size of "Spin" text */
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 2px 2px rgba(0,0,0,0.3);
 }
 
 .spinner-center-btn:hover {
     transform: scale(1.05);
     box-shadow: 
-        0 0 15px rgba(0,0,0,0.4),
-        inset 0 0 20px rgba(255,255,255,0.7);
+        0 0 15px rgba(0,0,0,0.5),
+        inset 0 0 25px rgba(255,255,255,0.8);
 }
 
 .spinner-center-btn:active {
     transform: scale(0.98);
 }
+
+.spinner-center-btn:disabled {
+    background-color: #8c3217; /* Muted color when disabled */
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
 
 /* --- Spinner Base --- */
 .spinner-base {
@@ -171,84 +199,7 @@ p {
     border-top: none; /* No top border */
 }
 
-/* --- Number Selection Board (Hidden by default as per request) --- */
+/* --- Number Selection Board (Hidden by default) --- */
 .number-selection-board {
-    display: none; /* Hide this section if not needed for this design */
+    display: none;
 }
-
-/* If you want to show it, you can remove display: none; */
-/* .number-selection-board {
-    width: 90%;
-    max-width: 600px;
-    background-color: #2c2c54;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-    text-align: center;
-    margin-top: 40px;
-    display: block; // Show it
-}
-
-.number-selection-board h3 {
-    color: #f7b538;
-    margin-bottom: 20px;
-    font-size: 1.5em;
-}
-
-.numbers-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-    gap: 10px;
-    margin-bottom: 30px;
-    justify-items: center;
-}
-
-.number-btn {
-    background-color: #4a4e69;
-    color: #f0f0f0;
-    border: none;
-    padding: 12px 0;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.1em;
-    font-weight: bold;
-    transition: background-color 0.2s, transform 0.1s;
-    width: 100%;
-}
-
-.number-btn:hover {
-    background-color: #5d6282;
-    transform: translateY(-2px);
-}
-
-.number-btn.selected {
-    background-color: #f05a28; // Matching the red-orange in spinner
-    color: #fff;
-    box-shadow: 0 0 10px rgba(240, 90, 40, 0.7);
-}
-
-.number-btn:active {
-    transform: translateY(0);
-}
-
-.submit-numbers-btn {
-    background-color: #f05a28;
-    color: #fff;
-    border: none;
-    padding: 15px 30px;
-    border-radius: 10px;
-    font-size: 1.2em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s;
-}
-
-.submit-numbers-btn:hover {
-    background-color: #e34c20;
-    transform: translateY(-2px);
-}
-
-.submit-numbers-btn:active {
-    transform: translateY(0);
-}
-*/

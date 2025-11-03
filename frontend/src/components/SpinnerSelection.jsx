@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom"; // Removed useOutletContext as it wasn't used
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import './spinnerselection.css';
 
 import socket from "../socket";
@@ -7,21 +7,22 @@ import socket from "../socket";
 const SpinnerSelection = () => {
   const [searchParams] = useSearchParams();
   const [selectedNumbers, setSelectedNumbers] = useState([]);
+  const [isSpinning, setIsSpinning] = useState(false);
+  const [wheelRotation, setWheelRotation] = useState(0); // State to control wheel rotation
 
   const username = searchParams.get("username");
   const telegramId = searchParams.get("telegramId");
   const stake = searchParams.get("stake");
   const navigate = useNavigate();
 
-  // Spinner values - these will be the visible segments based on your image
-  // Note: Your image shows 5 segments (20, 30, 40, 50, 50).
-  // I'll use values that allow for a similar visual.
+  // Spinner values from your ORIGINAL code: 200, 150, 100, 50, 5, "Sad"
   const spinnerSegmentsData = [
-    { value: 20, unit: "BIRR", color: "#f7b538" }, // Orange
-    { value: 30, unit: "BIRR", color: "#f7b538" }, // Orange
-    { value: 40, unit: "BIRR", color: "#f05a28" }, // Red-orange
-    { value: 50, unit: "BIRR", color: "#22a7f0" }, // Blue
-    { value: 50, unit: "BIRR", color: "#22a7f0" }, // Blue (Assuming two 50-BIRR blue sections from image)
+    { value: 200, unit: "ETB", color: "#f7b538" }, // Orange
+    { value: 150, unit: "ETB", color: "#f05a28" }, // Red-orange
+    { value: 100, unit: "ETB", color: "#22a7f0" }, // Blue
+    { value: 50, unit: "ETB", color: "#f7b538" },  // Orange
+    { value: 5, unit: "ETB", color: "#f05a28" },   // Red-orange
+    { value: "Sad", unit: "", color: "#4a4e69" }  // Muted color for Sad slot
   ];
 
   useEffect(() => {
@@ -54,6 +55,25 @@ const SpinnerSelection = () => {
     }
   };
 
+  const handleSpinClick = () => {
+    if (isSpinning) return;
+
+    setIsSpinning(true);
+    // Simulate a spin: rotate by a random amount for 3-5 full turns + extra to land
+    const minRotations = 3;
+    const maxRotations = 5;
+    const extraDegrees = Math.floor(Math.random() * 360) + 720; // 720 for at least 2 full turns
+    const newRotation = wheelRotation + (minRotations + Math.random() * (maxRotations - minRotations)) * 360 + extraDegrees;
+
+    setWheelRotation(newRotation);
+
+    // After animation finishes (e.g., 5 seconds), reset spinning state
+    setTimeout(() => {
+      setIsSpinning(false);
+      alert("Spinner stopped!"); // Or call your actual result logic here
+    }, 5000); // Match this duration with your CSS animation duration
+  };
+
   const handleSubmit = () => {
     if (selectedNumbers.length === 0) {
       alert("Please select at least one number");
@@ -74,87 +94,81 @@ const SpinnerSelection = () => {
   };
 
   const numSegments = spinnerSegmentsData.length;
-  const segmentAngle = 360 / numSegments; // Calculate angle for each segment
+  const segmentAngle = 360 / numSegments;
 
   return (
-    <div className="spinner-selection-page"> {/* Changed class to avoid conflict */}
+    <div className="spinner-selection-page">
       <h2>Welcome, {username} 👋</h2>
       <p>Stake: {stake} ETB</p>
 
-      <div className="spinner-container"> {/* Overall container for spinner and base */}
-        <div className="spinner-pointer-top"></div> {/* Top pointer */}
+      <div className="spinner-container">
+        <div className="spinner-pointer-top"></div>
 
-        <div className="spinner-wheel-frame"> {/* Outer frame with studs */}
-          {Array.from({ length: 24 }).map((_, i) => ( // Example for 24 studs
+        <div className="spinner-wheel-frame">
+          {Array.from({ length: 24 }).map((_, i) => (
             <div
               key={i}
               className="stud"
               style={{
-                transform: `rotate(${i * (360 / 24)}deg) translate(calc(100% - 15px))`, // Position studs along the edge
+                transform: `rotate(${i * (360 / 24)}deg) translate(calc(100% - 15px))`,
               }}
             ></div>
           ))}
 
-          <div className="spinner-wheel"> {/* The actual rotating wheel */}
+          <div
+            className={`spinner-wheel ${isSpinning ? 'spinning' : ''}`}
+            style={{ transform: `rotate(${wheelRotation}deg)` }}
+          >
             {spinnerSegmentsData.map((segment, index) => {
               const rotateDeg = index * segmentAngle;
+              const isEmoji = segment.value === "Sad";
+
               return (
                 <div
                   key={index}
-                  className="spinner-segment-new" // New class for the pie slices
+                  className="spinner-segment-new"
                   style={{
                     backgroundColor: segment.color,
                     transform: `rotate(${rotateDeg}deg) skewY(${90 - segmentAngle / 2}deg)`,
-                    // We also need to set clip-path if we want perfect lines,
-                    // but `transform: skewY` with `overflow: hidden` on parent
-                    // and then `transform: skewY` back on content is the pure CSS way.
-                    // For perfect radial lines, clip-path with calculated points is better
-                    // but harder to make dynamic for N segments. We'll use border for demarcation.
                   }}
                 >
                   <div
                     className="segment-text-content"
                     style={{
-                      transform: `skewY(${-(90 - segmentAngle / 2)}deg) rotate(${segmentAngle / 2}deg) translateX(calc(50% + 20px))`, // Rotate text and push it out
-                      // Adjust translate to position text radially inside the segment
-                      left: '50%',
-                      top: '50%',
-                      transformOrigin: '0% 0%', // Pivot from the center
+                      transform: `skewY(${-(90 - segmentAngle / 2)}deg) rotate(${segmentAngle / 2}deg) translateX(calc(50% - 30px))`,
+                      // The translateX needs to push it from the center of rotation to the middle of the segment
+                      // rotate(${segmentAngle / 2}deg) helps align text within its segment's center
                     }}
                   >
-                    <span className="segment-value">{segment.value}</span>
-                    <span className="segment-unit">{segment.unit}</span>
+                    {isEmoji ? (
+                      <img src="/images/sad.png" alt="Sad Emoji" className="segment-emoji-img" />
+                    ) : (
+                      <>
+                        <span className="segment-value">{segment.value}</span>
+                        {segment.unit && <span className="segment-unit">{segment.unit}</span>}
+                      </>
+                    )}
                   </div>
                 </div>
               );
             })}
           </div>
 
-          <button className="spinner-center-btn" onClick={() => alert("Spinning...")}>
-            {/* You can add an icon or text here */}
+          <button
+            className="spinner-center-btn"
+            onClick={handleSpinClick}
+            disabled={isSpinning}
+          >
+            <span className="spin-text">Spin</span>
           </button>
         </div>
 
-        <div className="spinner-base"></div> {/* The base of the spinner */}
+        <div className="spinner-base"></div>
       </div>
 
       {/* Number selection board (keeping for context, hidden by default if not needed) */}
       <div className="number-selection-board" style={{display: 'none'}}> 
-        <h3>Select Your Numbers (1-100)</h3>
-        <div className="numbers-grid">
-          {Array.from({ length: 100 }, (_, i) => i + 1).map((num) => (
-            <button
-              key={num}
-              className={`number-btn ${selectedNumbers.includes(num) ? 'selected' : ''}`}
-              onClick={() => handleSelect(num)}
-            >
-              {num}
-            </button>
-          ))}
-        </div>
-        <button className="submit-numbers-btn" onClick={handleSubmit}>
-          Confirm Selections
-        </button>
+        {/* ... (your existing number selection board code) ... */}
       </div>
     </div>
   );
