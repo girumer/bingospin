@@ -1,133 +1,137 @@
-.spinner-selection {
-  text-align: center;
-  padding: 20px;
-}
+/* spinnerselection.css */
 
-.number-grid {
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  gap: 5px;
-  margin-top: 20px;
-}
-
-.number-item {
-  background: #eee;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 5px;
-}
 .spinner-selection {
-  text-align: center;
-  color: #fff;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #0a2540;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 2rem;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f3f3f8;
   min-height: 100vh;
 }
 
 .spinner-selection h2 {
-  font-size: 1.8rem;
   margin-bottom: 0.5rem;
+  color: #38456a;
+  font-size: 2rem;
 }
 
 .spinner-selection p {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
+  color: #65657f;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
 }
 
 .spinner-board {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 27rem;
+  height: 27rem;
   position: relative;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 12px #b4c4e8;
+  margin-bottom: 2rem;
 }
 
 .spinner-circle {
   position: relative;
   width: 22rem;
   height: 22rem;
+  margin: auto;
+  border: 6px dashed #b7aae5;
   border-radius: 50%;
-  background: radial-gradient(circle at center, #222 40%, #111 100%);
-  border: 8px solid #6a1b9a;
-  box-shadow: 0 0 20px #6a1b9a;
+  background: linear-gradient(140deg, #f8e7fa 0% 40%, #dee5fa 85%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Spinner slots arranged in circle */
 .spinner-slot {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 4.5rem;
-  height: 4.5rem;
-  line-height: 4.5rem;
-  text-align: center;
+  top: 48%;
+  left: 48%;
+  width: 4rem;
+  height: 4rem;
+  background: #e4eafd;
+  color: #38456a;
+  border: 2px solid #b7aae5;
   border-radius: 50%;
-  background-color: #ff9800;
-  color: #fff;
-  font-weight: bold;
-  font-size: 1.2rem;
-  transform-origin: center;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
-  transition: background-color 0.3s;
-}
-
-.spinner-slot:nth-child(1) { background-color: #f44336; }
-.spinner-slot:nth-child(2) { background-color: #4caf50; }
-.spinner-slot:nth-child(3) { background-color: #2196f3; }
-.spinner-slot:nth-child(4) { background-color: #ffeb3b; color: #000; }
-.spinner-slot:nth-child(5) { background-color: #9c27b0; }
-
-.spinner-slot:hover {
-  background-color: #ffcc80;
+  text-align: center;
+  line-height: 4rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  transition: transform 0.3s, background 0.3s;
   cursor: pointer;
+  box-shadow: 0 1px 4px #cfd7ed;
 }
 
 .spinner-slot.emoji {
-  transform: translate(-50%, -50%);
-  width: 5rem;
-  height: 5rem;
+  background: transparent;
+  border: none;
+  width: 4rem;
+  height: 4rem;
+  left: 50%; 
   top: 50%;
-  left: 50%;
-  background: none;
+  transform: translate(-50%, -50%);
   box-shadow: none;
 }
 
 .spinner-slot.emoji img {
-  width: 100%;
-  height: 100%;
+  width: 3rem;
+  height: 3rem;
   object-fit: contain;
 }
-
+ 
 .spin-btn {
   position: absolute;
-  bottom: -3.5rem;
+  bottom: 15%;
   left: 50%;
   transform: translateX(-50%);
-  padding: 0.8rem 2rem;
-  background-color: #00bcd4;
+  background: #a48af7;
   color: #fff;
   border: none;
-  border-radius: 2rem;
-  font-weight: bold;
-  font-size: 1rem;
+  border-radius: 25px;
+  padding: 0.8rem 2.2rem;
+  font-size: 1.3rem;
+  font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 0 12px #00bcd4;
-  transition: background-color 0.3s;
+  box-shadow: 0 2px 12px #b4c4e8;
+  transition: background 0.2s;
 }
 
 .spin-btn:hover {
-  background-color: #0097a7;
+  background: #7c4cf5;
 }
 
-.number-item.selected {
-  background: #4caf50;
-  color: white;
+/* Responsive Design */
+@media (max-width: 600px) {
+  .spinner-board, .spinner-circle {
+    width: 99vw;
+    height: 99vw;
+    max-width: 99vw;
+    max-height: 99vw;
+    min-width: 250px;
+    min-height: 250px;
+  }
+  .spinner-slot {
+    width: 2.7rem;
+    height: 2.7rem;
+    line-height: 2.7rem;
+    font-size: 1.1rem;
+  }
+  .spin-btn {
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+  }
 }
 
-.submit-btn {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background: #2196f3;
-  color: white;
-  border: none;
-  cursor: pointer;
+/* Optional: Add selected effect if used for selectable numbers */
+.spinner-slot.selected {
+  background: #d4bfff;
+  color: #6b489c;
+  border-color: #7c4cf5;
 }
+
