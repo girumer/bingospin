@@ -16,47 +16,79 @@
   cursor: pointer;
   border-radius: 5px;
 }
+.spinner-selection {
+  text-align: center;
+  color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #0a2540;
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+.spinner-selection h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.spinner-selection p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
 .spinner-board {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 2rem 0;
+  position: relative;
 }
 
 .spinner-circle {
   position: relative;
-  width: 24rem;
-  height: 24rem;
+  width: 22rem;
+  height: 22rem;
   border-radius: 50%;
   background: radial-gradient(circle at center, #222 40%, #111 100%);
-  border: 2px dashed #444;
+  border: 8px solid #6a1b9a;
+  box-shadow: 0 0 20px #6a1b9a;
 }
 
 .spinner-slot {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 4rem;
-  height: 4rem;
-  line-height: 4rem;
+  width: 4.5rem;
+  height: 4.5rem;
+  line-height: 4.5rem;
   text-align: center;
   border-radius: 50%;
-  background-color: #333;
+  background-color: #ff9800;
   color: #fff;
   font-weight: bold;
+  font-size: 1.2rem;
   transform-origin: center;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+  transition: background-color 0.3s;
 }
 
+.spinner-slot:nth-child(1) { background-color: #f44336; }
+.spinner-slot:nth-child(2) { background-color: #4caf50; }
+.spinner-slot:nth-child(3) { background-color: #2196f3; }
+.spinner-slot:nth-child(4) { background-color: #ffeb3b; color: #000; }
+.spinner-slot:nth-child(5) { background-color: #9c27b0; }
+
 .spinner-slot:hover {
-  background-color: #555;
+  background-color: #ffcc80;
+  cursor: pointer;
 }
 
 .spinner-slot.emoji {
   transform: translate(-50%, -50%);
-  width: 4rem;
-  height: 4rem;
+  width: 5rem;
+  height: 5rem;
   top: 50%;
   left: 50%;
+  background: none;
+  box-shadow: none;
 }
 
 .spinner-slot.emoji img {
@@ -67,17 +99,23 @@
 
 .spin-btn {
   position: absolute;
-  bottom: -3rem;
+  bottom: -3.5rem;
   left: 50%;
   transform: translateX(-50%);
-  padding: 0.6rem 1.2rem;
+  padding: 0.8rem 2rem;
   background-color: #00bcd4;
   color: #fff;
   border: none;
-  border-radius: 1rem;
+  border-radius: 2rem;
   font-weight: bold;
+  font-size: 1rem;
   cursor: pointer;
-  box-shadow: 0 0 10px #00bcd4;
+  box-shadow: 0 0 12px #00bcd4;
+  transition: background-color 0.3s;
+}
+
+.spin-btn:hover {
+  background-color: #0097a7;
 }
 
 .number-item.selected {
