@@ -67,21 +67,34 @@ if (!username || !telegramId || !stake) {
     <div className="spinner-selection">
       <h2>Welcome, {username} 👋</h2>
       <p>Stake: {stake} ETB</p>
-      <div className="number-grid">
-        {numbers.map((num) => (
-          <div
-            key={num}
-            className={`number-item ${selectedNumbers.includes(num) ? "selected" : ""}`}
-            onClick={() => handleSelect(num)}
-          >
-            {num}
-          </div>
-        ))}
-      </div>
-      <button onClick={handleSubmit} className="submit-btn">
-        Confirm Selection
-      </button>
+    <div className="spinner-board">
+  <div className="spinner-circle">
+    {[200, 150, 100, 50, 5].map((value, index) => {
+      const angle = (360 / 6) * index;
+      return (
+        <div
+          key={value}
+          className="spinner-slot"
+          style={{
+            transform: `rotate(${angle}deg) translate(10rem) rotate(-${angle}deg)`,
+          }}
+        >
+          {value}
+        </div>
+      );
+    })}
+
+    <div className="spinner-slot emoji">
+      <img src="/images/sad.png" alt="Sad Emoji" />
     </div>
+
+    <button className="spin-btn" onClick={() => alert("Spinning...")}>
+      🎡 Spin
+    </button>
+  </div>
+</div>
+
+</div>
   );
 };
 
