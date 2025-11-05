@@ -1527,6 +1527,8 @@ app.post("/loginacess",getUsernameFromToken,(req,res)=>{
 });
 // adjust path if needed
 
+
+
 app.post('/update-wallet', async (req, res) => {
   const { telegramId, amount } = req.body;
 
@@ -1535,29 +1537,31 @@ app.post('/update-wallet', async (req, res) => {
   }
 
   try {
-    // Find user by telegramId
-    let user = await BingoBord.findOne({ telegramId });
+    // First, check if user exists
+    const user = await BingoBord.findOne({ telegramId });
 
     if (!user) {
       return res.status(404).json({ error: 'User not found.' });
     }
 
-    const newBalance = user.Wallet + amount;
-
-    if (newBalance < 0) {
+    // Prevent negative balance
+    if (user.Wallet + amount < 0) {
       return res.status(402).json({
         error: 'Insufficient funds.',
         wallet: user.Wallet
       });
     }
 
-    // Update wallet and save
-    user.Wallet = newBalance;
-    await user.save();
+    // Atomic update
+    const updatedUser = await BingoBord.findOneAndUpdate(
+      { telegramId },
+      { $inc: { Wallet: amount } },
+      { new: true }
+    );
 
     res.status(200).json({
       message: 'Wallet updated successfully.',
-      wallet: newBalance,
+      wallet: updatedUser.Wallet,
       telegramId
     });
   } catch (err) {
@@ -1565,6 +1569,7 @@ app.post('/update-wallet', async (req, res) => {
     res.status(500).json({ error: 'Server error.' });
   }
 });
+
 
 app.get("/dashboard", verfyuser, async (req, res) => {
   console.log("Dashboard route hit");
