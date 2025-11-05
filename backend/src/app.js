@@ -1525,45 +1525,47 @@ app.post("/loginacess",getUsernameFromToken,(req,res)=>{
         res.status(500).json({ error: "Internal server error." });
     }
 });
-app.post('/update-wallet', (req, res) => {
-    const { telegramId, amount } = req.body; // 'amount' can be positive (win) or negative (stake)
+// adjust path if needed
 
-    if (!telegramId || amount === undefined || typeof amount !== 'number') {
-           console.log("somthing wrong");
-        return res.status(400).json({ error: 'Invalid or missing telegramId or amount.' });
-   
+app.post('/update-wallet', async (req, res) => {
+  const { telegramId, amount } = req.body;
+
+  if (!telegramId || typeof amount !== 'number') {
+    return res.status(400).json({ error: 'Invalid telegramId or amount.' });
+  }
+
+  try {
+    // Find user by telegramId
+    let user = await BingoBord.findOne({ telegramId });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
     }
 
-    // Initialize balance if user is new
-    if (userWallets[telegramId] === undefined) {
-        userWallets[telegramId] = 0;
-    }
- console.log("somthing wrong what if");
-    const currentBalance = userWallets[telegramId];
-    const newBalance = currentBalance + amount;
+    const newBalance = user.Wallet + amount;
 
-    // Optional: Add basic security checks (e.g., prevent negative balance)
     if (newBalance < 0) {
-        console.warn(`[UPDATE] Transaction declined for ${telegramId}: Insufficient funds. Current: ${currentBalance}, Change: ${amount}`);
-        // Do not update the wallet
-        return res.status(402).json({ 
-            error: 'Insufficient funds for this transaction.', 
-            wallet: currentBalance 
-        });
+      return res.status(402).json({
+        error: 'Insufficient funds.',
+        wallet: user.Wallet
+      });
     }
 
-    // Update the wallet
-    userWallets[telegramId] = newBalance;
+    // Update wallet and save
+    user.Wallet = newBalance;
+    await user.save();
 
-    console.log(`[UPDATE] ${telegramId}: Old Balance: ${currentBalance}, Change: ${amount}, New Balance: ${newBalance}`);
-
-    // Respond with the new balance
-    res.status(200).json({ 
-        message: `Wallet updated successfully.`,
-        wallet: newBalance,
-        telegramId 
+    res.status(200).json({
+      message: 'Wallet updated successfully.',
+      wallet: newBalance,
+      telegramId
     });
+  } catch (err) {
+    console.error('Wallet update error:', err);
+    res.status(500).json({ error: 'Server error.' });
+  }
 });
+
 app.get("/dashboard", verfyuser, async (req, res) => {
   console.log("Dashboard route hit");
   try {
