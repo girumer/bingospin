@@ -561,7 +561,21 @@ useEffect(() => {
       {/* -------------------- END Custom Styles Block -------------------- */}
 
       <h1 className="text-4xl font-black tracking-wide">Prize Wheel of Fortune</h1>
-       <h1>Your balance: {wallet} </h1>
+    <h2 style={{
+  fontSize: '2rem',
+  fontWeight: 'bold',
+  color: '#0004ffff',
+  textShadow: '0 0 10px #282e2dff, 0 0 20px #292f2eff',
+  background: 'rgba(0, 0, 0, 0.3)',
+  padding: '15px 25px',
+  borderRadius: '12px',
+  backdropFilter: 'blur(6px)',
+  margin: '20px 0',
+  textAlign: 'center'
+}}>
+  Your balance: {wallet}
+</h2>
+
      
       <div className="wheel-container">
         
