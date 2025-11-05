@@ -1,6 +1,8 @@
 import React, { useState, useEffect,useMemo , useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import axios from "axios";
 
+import { toast, ToastContainer } from "react-toastify";
 
 import socket from "../socket";
 
@@ -8,6 +10,7 @@ const SpinnerSelection = () => {
   const [searchParams] = useSearchParams();
   const [selectedNumbers, setSelectedNumbers] = useState([]);
     const [wallet, setWallet] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
  // State to control wheel rotation
 const segmentThemes = [
   // Value 0 is the lowest prize/loss
@@ -57,7 +60,13 @@ const ls = {
  stake: localStorage.getItem("stake") || undefined,
 
 };
+const tg = {
 
+ username: tgUser?.username || undefined,
+
+ telegramId: tgUser?.id ? String(tgUser.id) : undefined,
+
+};
 const usernameParam = qp.username || cx.username || tg.username || ls.username || "";
 
 const telegramIdParam = qp.telegramId || cx.telegramId || tg.telegramId || ls.telegramId || "";
@@ -180,9 +189,7 @@ const probabilities = {
     }
   }, [username, telegramId, stake]);
 
-  if (!username || !telegramId || !stake) {
-    return <div>❌ Missing required info. Please return to the bot.</div>;
-  }
+ 
 
 // Restore confirmed cartelas from localStorage after refresh
 
@@ -277,6 +284,7 @@ useEffect(() => {
     
    <div className="spinner-container">
       {/* -------------------- Custom Styles Block (Merged from your CSS) -------------------- */}
+      
       <style>
         {`
         /* Load Inter font */
