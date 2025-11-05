@@ -658,16 +658,12 @@ bot.on('callback_query', async (callbackQuery) => {
   // ✅ Acknowledge the button click
   bot.sendMessage(chatId, "Select your bet amount for Spin & Win:", {
     reply_markup: {
-      inline_keyboard: [
-        [
-          { text: "Spin 5 ETB", callback_data: "spin_5" },
-          { text: "Spin 10 ETB", callback_data: "spin_10" },
-        ],
-        [
-          { text: "Spin 20 ETB", callback_data: "spin_20" },
-          { text: "Spin 50 ETB", callback_data: "spin_50" },
-        ]
-      ]
+   inline_keyboard: [
+  [
+    { text: "Spin 5 ETB", callback_data: "spin_5" },
+  ]
+]
+
     }
   });
   break;
@@ -842,9 +838,7 @@ case "room_30":
   });
   break;
  case "spin_5":
-case "spin_10":
-case "spin_20":
-case "spin_50":
+
   bot.answerCallbackQuery(callbackQuery.id); // ✅ Acknowledge the button click
 
   const spinStake = Number(data.split("_")[1]);
