@@ -1,5 +1,5 @@
 import React, { useState, useEffect,useMemo , useRef } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import {  useNavigate, useSearchParams,useOutletContext } from "react-router-dom";
 import axios from "axios";
 
 import { toast, ToastContainer } from "react-toastify";
@@ -60,6 +60,7 @@ const ls = {
  stake: localStorage.getItem("stake") || undefined,
 
 };
+const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
 const tg = {
 
  username: tgUser?.username || undefined,
@@ -274,7 +275,7 @@ useEffect(() => {
   };
 
   init();
-}, [ usernameParam, telegramIdParam, clientId, stake]);
+}, [ usernameParam, telegramIdParam,  stake]);
 
 
   
