@@ -564,7 +564,7 @@ useEffect(() => {
     <h2 style={{
   fontSize: '2rem',
   fontWeight: 'bold',
-  color: '#0004ffff',
+  color: '#4e2b03e5',
   textShadow: '0 0 10px #282e2dff, 0 0 20px #292f2eff',
   background: 'rgba(0, 0, 0, 0.3)',
   padding: '15px 25px',
