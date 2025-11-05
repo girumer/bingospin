@@ -1525,6 +1525,25 @@ app.post("/loginacess",getUsernameFromToken,(req,res)=>{
         res.status(500).json({ error: "Internal server error." });
     }
 });
+app.post('/depositcheckB', (req, res) => {
+    const { telegramId } = req.body;
+
+    if (!telegramId) {
+        return res.status(400).json({ error: 'Missing telegramId in request body.' });
+    }
+
+    // Check if the user exists, default to 0 if not found
+    const balance = userWallets[telegramId] !== undefined ? userWallets[telegramId] : 0;
+
+    console.log(`[GET] Balance request for ${telegramId}: ${balance}`);
+    
+    // Respond with the wallet/balance structure the frontend expects
+    res.status(200).json({ 
+        wallet: balance,
+        balance: balance, // Provide both for compatibility with frontend logic
+        telegramId 
+    });
+});
 app.get("/dashboard", verfyuser, async (req, res) => {
   console.log("Dashboard route hit");
   try {

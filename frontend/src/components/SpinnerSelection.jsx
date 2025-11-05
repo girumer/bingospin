@@ -9,6 +9,7 @@ import socket from "../socket";
 const SpinnerSelection = () => {
   const [searchParams] = useSearchParams();
   const [selectedNumbers, setSelectedNumbers] = useState([]);
+  const stakeValue=5;
     const [wallet, setWallet] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
  // State to control wheel rotation
@@ -130,11 +131,19 @@ const probabilities = {
     }
   };
 
-  const spinWheel = () => {
-    if (spinning) return;
+  const spinWheel  = async () => {
+   if (spinning || wallet < stakeValue) {
+        if (wallet < stakeValue) {
+            toast.error(`Insufficient balance! You need ${stakeValue} to spin.`);
+        }
+        return;
+    }
     setSpinning(true);
     setResult(null);
-
+const deduction = -stakeValue;
+   // const newWalletAfterDeduction = await updateWallet(deduction);
+    setWallet(prev => prev + deduction);
+    await updateWallet(deduction);
     const winningNumber = getWeightedRandomNumber();
     const segmentIndex = numbers.indexOf(winningNumber);
 
@@ -157,9 +166,20 @@ const probabilities = {
     }
 
     // Set result after the spin animation completes
-    setTimeout(() => {
+   setTimeout(async () => {
       setSpinning(false);
       setResult(winningNumber);
+      const winAmount = winningNumber;
+
+      if (winAmount > 0) {
+        showToast(`🥳 You won ${winAmount} ETB!`, 'success');
+        // Update wallet with the win amount
+        await updateWallet(winAmount);
+      } else {
+        // If winAmount is 0 (or 5), the stake was already recorded as a net loss.
+        showToast(getResultMessage(winningNumber), winAmount === 0 ? 'error' : 'info');
+        // No further wallet update needed for a net loss/break-even
+      }
     }, 4000);
   };
 
@@ -278,7 +298,29 @@ useEffect(() => {
 }, [ usernameParam, telegramIdParam,  stake]);
 
 
-  
+  const updateWallet = async (amount) => {
+    if (!telegramIdParam) return;
+
+    try {
+        const response = await axios.post(
+            `${process.env.REACT_APP_BACKEND_URL}/update-wallet`, // **CHANGE THIS URL to your actual endpoint**
+            { 
+                telegramId: telegramIdParam, 
+                amount: amount // Positive for win, negative for loss/stake
+            }
+        );
+        // Assuming your backend returns the new balance
+        const newBalance = response.data.wallet || response.data.balance || 0;
+        setWallet(newBalance);
+        return newBalance;
+    } catch (err) {
+        console.error("Failed to update wallet:", err.response ? err.response.data : err.message);
+        toast.error("Failed to update wallet balance.");
+        // Re-fetch current wallet state if update failed
+        fetchWalletData(); 
+        return wallet; // Return current state as a fallback
+    }
+};
 
  
   return (
