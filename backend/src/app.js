@@ -1529,14 +1529,16 @@ app.post('/update-wallet', (req, res) => {
     const { telegramId, amount } = req.body; // 'amount' can be positive (win) or negative (stake)
 
     if (!telegramId || amount === undefined || typeof amount !== 'number') {
+           console.log("somthing wrong");
         return res.status(400).json({ error: 'Invalid or missing telegramId or amount.' });
+   
     }
 
     // Initialize balance if user is new
     if (userWallets[telegramId] === undefined) {
         userWallets[telegramId] = 0;
     }
-
+ console.log("somthing wrong what if");
     const currentBalance = userWallets[telegramId];
     const newBalance = currentBalance + amount;
 
