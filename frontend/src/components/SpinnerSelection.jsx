@@ -7,6 +7,7 @@ import socket from "../socket";
 const SpinnerSelection = () => {
   const [searchParams] = useSearchParams();
   const [selectedNumbers, setSelectedNumbers] = useState([]);
+    const [wallet, setWallet] = useState(0);
  // State to control wheel rotation
 const segmentThemes = [
   // Value 0 is the lowest prize/loss
@@ -21,6 +22,45 @@ const segmentThemes = [
   { value: 30, theme: 'Mango', color: '#F6B26B', icon: '🥭' }, // Mango (Orange)
   { value: 50, theme: 'Bonus', color: '#4A86E8', icon: '✨' }, // Bonus (Blue)
 ];
+const ctx = useOutletContext() || {};
+const search = new URLSearchParams(window.location.search);
+const qp = {
+
+ username: search.get("username"),
+
+telegramId: search.get("telegramId"),
+
+ 
+
+ stake: search.get("stake"),
+
+};
+const cx = {
+
+ username: ctx.usernameFromUrl,
+
+ telegramId: ctx.telegramIdFromUrl,
+
+
+
+ stake: ctx.stakeFromUrl,
+
+};
+const ls = {
+
+ username: localStorage.getItem("username") || undefined,
+
+ telegramId: localStorage.getItem("telegramId") || undefined,
+
+ 
+
+ stake: localStorage.getItem("stake") || undefined,
+
+};
+
+const usernameParam = qp.username || cx.username || tg.username || ls.username || "";
+
+const telegramIdParam = qp.telegramId || cx.telegramId || tg.telegramId || ls.telegramId || "";
 
 const numbers = segmentThemes.map(t => t.value);
 const segmentCount = numbers.length;
@@ -132,7 +172,7 @@ const probabilities = {
     if (username && telegramId && stake) {
       const clientId = `${telegramId}-spinner`;
       socket.emit("joinSpinnerRoom", {
-        roomId: stake,
+       
         username,
         telegramId,
         clientId,
@@ -144,9 +184,91 @@ const probabilities = {
     return <div>❌ Missing required info. Please return to the bot.</div>;
   }
 
-  
+// Restore confirmed cartelas from localStorage after refresh
 
- 
+ const fetchWalletData = async () => {
+
+ if (!telegramIdParam) {
+
+ console.warn("No telegramIdParam available to fetch wallet.");
+
+ return 0;
+
+}
+
+ try {
+
+ console.log("Fetching wallet data for Telegram ID is:", telegramIdParam);
+
+const response = await axios.post(
+
+ `${process.env.REACT_APP_BACKEND_URL}/depositcheckB`,
+
+ { telegramId: telegramIdParam}
+
+
+
+ );
+
+
+ let walletValue;
+
+ if (typeof response.data === 'object' && response.data !== null) {
+
+ walletValue = response.data.wallet || response.data.balance || 0;
+
+ } else if (typeof response.data === 'number') {
+
+ walletValue = response.data;
+
+ } else if (typeof response.data === 'string' && !isNaN(response.data)) {
+
+ walletValue = parseFloat(response.data);
+
+ } else {
+
+ console.error("Unexpected response format:", response.data);
+
+ walletValue = 0;
+
+ }
+
+ setWallet(walletValue);
+
+ return walletValue;
+
+ } catch (err) {
+
+ console.error("Failed to fetch wallet data:", err.response ? err.response.data : err.message);
+
+ toast.error("Failed to load wallet data.");
+
+ return 0; }
+
+ };
+useEffect(() => {
+  const init = async () => {
+    if (!usernameParam || !telegramIdParam) {
+      console.log("Waiting for all required URL parameters...");
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      // Fetch wallet data
+      await fetchWalletData();
+      // Join the game room (if needed)
+    } catch (err) {
+      console.error("Failed to initialize:", err);
+      toast.error("Failed to initialize game. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  init();
+}, [ usernameParam, telegramIdParam, clientId, stake]);
+
 
   
 
@@ -390,6 +512,7 @@ const probabilities = {
       <h1 className="text-4xl font-black tracking-wide">Prize Wheel of Fortune</h1>
       <h2>Welcome, {username} 👋</h2>
       <p>Stake: {stake} ETB</p>
+      <div>Your balance: {wallet} </div>
       <div className="wheel-container">
         
         {/* The wheel now uses the conicGradient for seamless colors */}

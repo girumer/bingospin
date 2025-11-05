@@ -56,13 +56,13 @@ telegramId: search.get("telegramId"),
 
 const cx = {
 
-  username: ctx.usernameFromUrl,
+ username: ctx.usernameFromUrl,
 
-  telegramId: ctx.telegramIdFromUrl,
+ telegramId: ctx.telegramIdFromUrl,
 
-  roomId: ctx.roomIdFromUrl,
+ roomId: ctx.roomIdFromUrl,
 
-  stake: ctx.stakeFromUrl,
+ stake: ctx.stakeFromUrl,
 
 };
 
@@ -114,130 +114,130 @@ const stake = Number(qp.stake || cx.stake || ls.stake || 0);
 
 useEffect(() => {
 
-  if (usernameParam) localStorage.setItem("username", usernameParam);
+ if (usernameParam) localStorage.setItem("username", usernameParam);
 
-  if (telegramIdParam) localStorage.setItem("telegramId", telegramIdParam);
+ if (telegramIdParam) localStorage.setItem("telegramId", telegramIdParam);
 
-  if (roomId) localStorage.setItem("roomId", roomId);
+ if (roomId) localStorage.setItem("roomId", roomId);
 
-  if (!Number.isNaN(stake)) localStorage.setItem("stake", String(stake));
+ if (!Number.isNaN(stake)) localStorage.setItem("stake", String(stake));
 
 }, [usernameParam, telegramIdParam, roomId, stake]);
 
 
 
-  const [searchParams] = useSearchParams();
-
- 
-
-  // Get parameters from URL
+ const [searchParams] = useSearchParams();
 
 
 
- 
+ // Get parameters from URL
 
-  // Use these parameters for your component's logic
 
- 
 
- 
 
-  // --- States ---
 
-  const [selectedCartelas, setSelectedCartelas] = useState([]);
+ // Use these parameters for your component's logic
 
-  const [finalSelectedCartelas, setFinalSelectedCartelas] = useState([]);
 
-  const [timer, setTimer] = useState(null);
 
-  const [wallet, setWallet] = useState(0);
 
-  const [activeGame, setActiveGame] = useState(false);
 
-  const [isLoading, setIsLoading] = useState(true);
+ // --- States ---
+
+ const [selectedCartelas, setSelectedCartelas] = useState([]);
+
+ const [finalSelectedCartelas, setFinalSelectedCartelas] = useState([]);
+
+ const [timer, setTimer] = useState(null);
+
+ const [wallet, setWallet] = useState(0);
+
+ const [activeGame, setActiveGame] = useState(false);
+
+ const [isLoading, setIsLoading] = useState(true);
 
  // Currently selected by this user (not confirmed)
 const [myConfirmedCartelas, setMyConfirmedCartelas] = useState([]); // Confirmed cartelas for THIS user
 const [otherUsersCartelas, setOtherUsersCartelas] = useState([]); // Cartelas selected by OTHER users
 
-  // --- Generate clientId ---
+ // --- Generate clientId ---
 
-  const getClientId = () => {
+ const getClientId = () => {
 
-    let cid = localStorage.getItem("clientId");
+ let cid = localStorage.getItem("clientId");
 
-    if (!cid) {
+ if (!cid) {
 
-      cid = `${Date.now()}-${Math.random()}`;
+ cid = `${Date.now()}-${Math.random()}`;
 
-      localStorage.setItem("clientId", cid);
+ localStorage.setItem("clientId", cid);
 
-    }
+ }
 
-    return cid;
+ return cid;
 
-  };
+ };
 
-  const clientId = getClientId();
+ const clientId = getClientId();
 
 
 
-  // Fetch wallet data function
+ // Fetch wallet data function
 
-  const fetchWalletData = async () => {
+ const fetchWalletData = async () => {
 
-        if (!telegramIdParam) {
+ if (!telegramIdParam) {
 
-  console.warn("No telegramIdParam available to fetch wallet.");
+ console.warn("No telegramIdParam available to fetch wallet.");
 
-  return 0;
+ return 0;
 
 }
 
-    try {
+ try {
 
-      console.log("Fetching wallet data for Telegram ID is:", telegramIdParam);
+ console.log("Fetching wallet data for Telegram ID is:", telegramIdParam);
 
 const response = await axios.post(
 
-        `${process.env.REACT_APP_BACKEND_URL}/depositcheckB`,
+ `${process.env.REACT_APP_BACKEND_URL}/depositcheckB`,
 
-        { telegramId: telegramIdParam}
+ { telegramId: telegramIdParam}
 
-   
 
-      );
-     
 
-      let walletValue;
+ );
 
-      if (typeof response.data === 'object' && response.data !== null) {
 
-        walletValue = response.data.wallet || response.data.balance || 0;
+ let walletValue;
 
-      } else if (typeof response.data === 'number') {
+ if (typeof response.data === 'object' && response.data !== null) {
 
-        walletValue = response.data;
+ walletValue = response.data.wallet || response.data.balance || 0;
 
-      } else if (typeof response.data === 'string' && !isNaN(response.data)) {
+ } else if (typeof response.data === 'number') {
 
-        walletValue = parseFloat(response.data);
+ walletValue = response.data;
 
-      } else {
+ } else if (typeof response.data === 'string' && !isNaN(response.data)) {
 
-        console.error("Unexpected response format:", response.data);
+ walletValue = parseFloat(response.data);
 
-        walletValue = 0;
+ } else {
 
-      }
+ console.error("Unexpected response format:", response.data);
 
-      setWallet(walletValue);
+ walletValue = 0;
 
-      return walletValue;
+ }
 
-    } catch (err) {
+ setWallet(walletValue);
 
-      console.error("Failed to fetch wallet data:", err.response ? err.response.data : err.message);
+ return walletValue;
+
+ } catch (err) {
+
+ console.error("Failed to fetch wallet data:", err.response ? err.response.data : err.message);
 
       toast.error("Failed to load wallet data.");
 
@@ -245,7 +245,7 @@ const response = await axios.post(
 
     }
 
-  };
+ };
 
 
 useEffect(() => {
