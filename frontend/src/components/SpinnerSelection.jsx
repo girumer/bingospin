@@ -561,9 +561,10 @@ useEffect(() => {
       {/* -------------------- END Custom Styles Block -------------------- */}
 
       <h1 className="text-4xl font-black tracking-wide">Prize Wheel of Fortune</h1>
+       
       <h2>Welcome, {username} 👋</h2>
-      <p>Stake: {stake} ETB</p>
-      <div>Your balance: {wallet} </div>
+     <div>Your balance: {wallet} </div>
+     
       <div className="wheel-container">
         
         {/* The wheel now uses the conicGradient for seamless colors */}

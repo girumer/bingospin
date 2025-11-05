@@ -1525,22 +1525,40 @@ app.post("/loginacess",getUsernameFromToken,(req,res)=>{
         res.status(500).json({ error: "Internal server error." });
     }
 });
-app.post('/depositcheckB', (req, res) => {
-    const { telegramId } = req.body;
+app.post('/update-wallet', (req, res) => {
+    const { telegramId, amount } = req.body; // 'amount' can be positive (win) or negative (stake)
 
-    if (!telegramId) {
-        return res.status(400).json({ error: 'Missing telegramId in request body.' });
+    if (!telegramId || amount === undefined || typeof amount !== 'number') {
+        return res.status(400).json({ error: 'Invalid or missing telegramId or amount.' });
     }
 
-    // Check if the user exists, default to 0 if not found
-    const balance = userWallets[telegramId] !== undefined ? userWallets[telegramId] : 0;
+    // Initialize balance if user is new
+    if (userWallets[telegramId] === undefined) {
+        userWallets[telegramId] = 0;
+    }
 
-    console.log(`[GET] Balance request for ${telegramId}: ${balance}`);
-    
-    // Respond with the wallet/balance structure the frontend expects
+    const currentBalance = userWallets[telegramId];
+    const newBalance = currentBalance + amount;
+
+    // Optional: Add basic security checks (e.g., prevent negative balance)
+    if (newBalance < 0) {
+        console.warn(`[UPDATE] Transaction declined for ${telegramId}: Insufficient funds. Current: ${currentBalance}, Change: ${amount}`);
+        // Do not update the wallet
+        return res.status(402).json({ 
+            error: 'Insufficient funds for this transaction.', 
+            wallet: currentBalance 
+        });
+    }
+
+    // Update the wallet
+    userWallets[telegramId] = newBalance;
+
+    console.log(`[UPDATE] ${telegramId}: Old Balance: ${currentBalance}, Change: ${amount}, New Balance: ${newBalance}`);
+
+    // Respond with the new balance
     res.status(200).json({ 
-        wallet: balance,
-        balance: balance, // Provide both for compatibility with frontend logic
+        message: `Wallet updated successfully.`,
+        wallet: newBalance,
         telegramId 
     });
 });
