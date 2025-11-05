@@ -1,205 +1,119 @@
-/* General Layout and Background */
+/* Page */
 .spinner-selection-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 20px;
-    min-height: 100vh;
-    background-color: #3b5998; /* Blue background matching the image */
-    color: #f0f0f0;
-    font-family: 'Arial', sans-serif;
-    overflow: hidden;
+  text-align: center;
+  padding: 20px;
+  background: #fff5e6;
+  min-height: 100vh;
+  font-family: "Poppins", sans-serif;
 }
 
-h2 {
-    color: #f7b538; /* Orange-yellow for heading */
-    margin-bottom: 5px;
-    font-size: 1.8em;
-}
-
-p {
-    color: #a7a9be; /* Lighter text color */
-    margin-bottom: 25px;
-    font-size: 1.1em;
-}
-
-/* --- Spinner Container (Overall grouping for pointer, frame, wheel, base) --- */
+/* Container */
 .spinner-container {
-    position: relative;
-    width: 400px; /* Adjust overall size */
-    height: 480px; /* Account for pointer and base */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 50px; /* Space from top content */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* --- Top Pointer --- */
+/* Pointer */
 .spinner-pointer-top {
-    position: absolute;
-    top: 0px; /* Position above the frame */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 25px solid transparent;
-    border-right: 25px solid transparent;
-    border-bottom: 45px solid #f7b538; /* Yellow-orange color */
-    z-index: 20; /* Ensure it's on top */
-    filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3)); /* Soft shadow */
-    border-radius: 5px; /* Slightly rounded tip */
+  width: 0;
+  height: 0;
+  border-left: 18px solid transparent;
+  border-right: 18px solid transparent;
+  border-bottom: 28px solid #ff4747;
+  position: absolute;
+  top: -25px;
 }
 
-/* --- Outer Spinner Frame with Studs --- */
+/* Frame */
 .spinner-wheel-frame {
-    position: absolute;
-    top: 35px; /* Adjust to sit below pointer */
-    width: 380px; /* Diameter of the wheel frame */
-    height: 380px;
-    border-radius: 50%;
-    background-color: #6a5acd; /* Purple color for the frame */
-    box-shadow: 
-        inset 0 0 15px rgba(0,0,0,0.5), /* Inner shadow for depth */
-        0 8px 15px rgba(0,0,0,0.4); /* Outer shadow */
-    border: 5px solid #5a4bba; /* Darker purple border */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden; /* Keep studs contained */
+  position: relative;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: #ffe8c7;
+  border: 6px solid #ffb321;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-/* Studs on the frame */
-.stud {
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    background-color: #f7b538; /* Yellow-orange color */
-    border-radius: 50%;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    /* The transform property is set inline in React for positioning */
-}
-
-/* --- The Actual Rotating Wheel (Inside the frame) --- */
-.spinner-wheel {
-    position: relative;
-    width: 90%; /* Make wheel slightly smaller than frame */
-    height: 90%;
-    border-radius: 50%;
-    background-color: #333; /* Fallback for wheel background */
-    overflow: hidden; /* Crucial for clipping segments cleanly */
-    border: 2px solid rgba(0,0,0,0.1); /* Subtle inner border for wheel */
-    /* Add transition for smooth rotation */
-    transition: transform 5s cubic-bezier(0.1, 0.7, 0.1, 1); /* Slower start, faster middle, slow end */
-}
-
-/* --- Individual Spinner Segments (Pie Slices) --- */
+/* Segments (colorful) */
 .spinner-segment-new {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 50%; /* Half the circle's width (radius) */
-    height: 100%; /* Full height of the circle (diameter) */
-    transform-origin: 0% 100%; /* Rotate around the bottom-left corner of THIS element, which is the center of the spinner */
-    box-sizing: border-box;
-    border-right: 1px solid rgba(0,0,0,0.1); /* Visible demarcation line */
-    /* background-color set inline in React */
-    /* IMPORTANT: For the skewed segment to look like a pie slice,
-       the `overflow: hidden` on `.spinner-wheel` is critical.
-       The skew and rotate create the shape, and the overflow cuts off the excess.
-    */
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  top: 50%;
+  left: 50%;
+  transform-origin: left bottom;
+  border: 2px solid #fff;
+  border-radius: 4px;
 }
 
+/* Text inside segments */
 .segment-text-content {
-    position: absolute;
-    left: 0; /* Relative to its parent segment */
-    top: 50%;
-    width: 100%; /* Take full width of parent segment (the skewed area) */
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #fff; /* White text for numbers */
-    font-weight: bold;
-    text-shadow: 0 2px 3px rgba(0,0,0,0.4); /* Text shadow for readability */
-    /* Adjust these values to position text visually in the center of the slice */
-    /* The transform is set inline in React to counteract the segment's skew and rotate the text */
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.segment-value {
-    font-size: 2.8em; /* Slightly smaller for better fit, adjust as needed */
-    line-height: 1; /* Tighten line height */
-}
-
-.segment-unit {
-    font-size: 0.9em; /* Smaller unit text */
-    margin-top: 5px; /* Space between value and unit */
-}
-
+/* Emoji image */
 .segment-emoji-img {
-    width: 60px; /* Adjust emoji size to fit */
-    height: 60px;
-    object-fit: contain;
+  width: 26px;
+  height: 26px;
 }
 
+/* Wheel spin */
+.spinner-wheel {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  transition: transform 5s cubic-bezier(0.2, 0.8, 0.4, 1.1);
+  position: relative;
+}
 
-/* --- Center Spin Button --- */
+/* Spin Button */
 .spinner-center-btn {
-    position: absolute;
-    z-index: 15;
-    width: 90px; /* Larger central button */
-    height: 90px;
-    border-radius: 50%;
-    background-color: #e04e20; /* More distinct red for spin button */
-    border: 5px solid #fff; /* White border */
-    box-shadow: 
-        0 0 10px rgba(0,0,0,0.4),
-        inset 0 0 20px rgba(255,255,255,0.6); /* Inner highlight */
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s;
-    display: flex; /* For centering text */
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5em; /* Size of "Spin" text */
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 0 2px 2px rgba(0,0,0,0.3);
-}
-
-.spinner-center-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 
-        0 0 15px rgba(0,0,0,0.5),
-        inset 0 0 25px rgba(255,255,255,0.8);
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  background: #ffb321;
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+  transition: 0.2s;
 }
 
 .spinner-center-btn:active {
-    transform: scale(0.98);
+  transform: scale(0.92);
 }
 
-.spinner-center-btn:disabled {
-    background-color: #8c3217; /* Muted color when disabled */
-    cursor: not-allowed;
-    box-shadow: none;
-    transform: none;
+/* Studs around wheel */
+.stud {
+  width: 7px;
+  height: 7px;
+  background: #ff4747;
+  border-radius: 50%;
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  transform-origin: center 138px;
 }
 
-
-/* --- Spinner Base --- */
+/* Base stand */
 .spinner-base {
-    position: absolute;
-    bottom: 0px; /* Position at the very bottom of the container */
-    width: 200px;
-    height: 50px;
-    background-color: #6a5acd; /* Purple color matching frame */
-    border-radius: 0 0 20px 20px; /* Rounded bottom corners */
-    box-shadow: 0 8px 15px rgba(0,0,0,0.5);
-    border: 3px solid #5a4bba;
-    border-top: none; /* No top border */
-}
-
-/* --- Number Selection Board (Hidden by default) --- */
-.number-selection-board {
-    display: none;
+  width: 160px;
+  height: 20px;
+  background: #ffb321;
+  margin-top: 10px;
+  border-radius: 10px;
 }
