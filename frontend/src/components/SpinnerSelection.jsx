@@ -172,12 +172,12 @@ const deduction = -stakeValue;
       const winAmount = winningNumber;
 
       if (winAmount > 0) {
-        showToast(`🥳 You won ${winAmount} ETB!`, 'success');
+       // showToast(`🥳 You won ${winAmount} ETB!`, 'success');
         // Update wallet with the win amount
         await updateWallet(winAmount);
       } else {
         // If winAmount is 0 (or 5), the stake was already recorded as a net loss.
-        showToast(getResultMessage(winningNumber), winAmount === 0 ? 'error' : 'info');
+       // showToast(getResultMessage(winningNumber), winAmount === 0 ? 'error' : 'info');
         // No further wallet update needed for a net loss/break-even
       }
     }, 4000);
