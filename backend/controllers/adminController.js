@@ -138,7 +138,7 @@ exports.broadcastToAllCustomers = async (req, res) => {
         // NOTE: Telegram requires specific link formatting for Markdown V2 or HTML.
         // If 'Markdown' fails, try 'HTML' or 'MarkdownV2'
         const message = `ዛሬም ያሸነፉ  🔥🔥🔥
-        ጨዋታ ባሽነፉ ግዜ አንድ ኮይን እንደሚጨምርሎት ያቃሉ ?🔥🔥🔥
+        ጨዋታ ባሽነፉ ግዜ🔥🔥🔥
         ያሎትንስ  ኮይን ወድ ዋሌት እንድሚቅይሩስ ያቃሉ?🔥🔥🔥
         ኮይኖን ወደ ዋሌት ለመቀየር convert coins የሚልውን ይጠቀሙ
         ያሎትን ቀሪ ኮይን ለማወቅ  ሜኑ ውስጥ ገበተው  cheak your coin balance  የሚለውን ይመልክቱ 
