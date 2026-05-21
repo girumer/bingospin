@@ -1530,7 +1530,7 @@ app.post("/loginacess",getUsernameFromToken,(req,res)=>{
 
 
 app.post('/update-wallet', async (req, res) => {
-  const {  amount } = req.body;
+  const { telegramId, amount } = req.body;
 
   if (!telegramId || typeof amount !== 'number') {
     return res.status(400).json({ error: 'Invalid telegramId or amount.' });
